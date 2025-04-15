@@ -1,0 +1,29 @@
+<!-- Reminder System HTML Components -->
+<section id="reminder-section" class="reminder-section">
+    <h3><i class="fas fa-bell"></i> Daily Learning Reminders</h3>
+    <p>Never miss a day of learning! Set up reminders to maintain your daily study habit.</p>
+    
+    <form id="reminder-form" class="reminder-form">
+        <label for="reminder-email">Email for reminders:</label>
+        <div class="reminder-input-group">
+            <input type="email" id="reminder-email" placeholder="your.email@example.com" required>
+            <button type="submit">Save</button>
+        </div>
+    </form>
+    
+    <div class="reminder-toggle-container">
+        <label class="reminder-toggle">
+            <input type="checkbox" id="reminder-toggle">
+            <span class="reminder-toggle-slider"></span>
+        </label>
+        <span>Enable daily reminders</span>
+    </div>
+    
+    <div id="reminder-status" class="reminder-status status-disabled">
+        Reminders disabled
+    </div>
+    
+    <div class="reminder-info">
+        <p><small>You'll receive a notification if you haven't studied for 24 hours. Browser notifications work when your browser is open, while email reminders work anytime.</small></p>
+    </div>
+</section>
