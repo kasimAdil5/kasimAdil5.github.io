@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Growth Tracker - English Learning Tracker</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .tracker-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .vocab-form {
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+        }
+        
+        .form-group textarea {
+            min-height: 80px;
+        }
+        
+        .submit-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .submit-btn:hover {
+            background-color: #1a6aa8;
+        }
+        
+        .success-message {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 10px;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: var(--primary-color);
+        }
+        
+        .back-link i {
+            margin-right: 5px;
+        }
+        
+        .chart-container {
+            margin-top: 30px;
+            height: 400px;
+        }
+        
+        .vocab-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+        
+        .vocab-table th, .vocab-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .vocab-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        
+        .vocab-table tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .useful-words {
+            margin-top: 30px;
+        }
+        
+        .useful-words h3 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .word-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .word-item {
+            background-color: #f8f9fa;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+        
+        .word-item:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>English Learning Journey</h1>
+            <p>Vocabulary Growth Tracker</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="tracker-container">
+                <a href="../index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Main Page</a>
+                
+                <section>
+                    <h2>Vocabulary Growth Tracker</h2>
+                    <div class="card">
+                        <p>Use this tracker to monitor your vocabulary growth throughout your English learning journey. Record new words learned each week and track your progress over time.</p>
+                        
+                        <form id="vocabularyForm" class="tracking-form vocab-form">
+                            <div class="form-group">
+                                <label for="weekSelect">Select Week:</label>
+                                <select id="weekSelect" name="week" required>
+                                    <option value="">Select a week</option>
+                                    <option value="week1">Week 1</option>
+                                    <option value="week2">Week 2</option>
+                                    <option value="week3">Week 3</option>
+                                    <option value="week4">Week 4</option>
+                                    <option value="week5">Week 5</option>
+                                    <option value="week6">Week 6</option>
+                                    <option value="week7">Week 7</option>
+                                    <option value="week8">Week 8</option>
+                                    <option value="week9">Week 9</option>
+                                    <option value="week10">Week 10</option>
+                                    <option value="week11">Week 11</option>
+                                    <option value="week12">Week 12</option>
+                                    <option value="week13">Week 13</option>
+                                    <option value="week14">Week 14</option>
+                                    <option value="week15">Week 15</option>
+                                    <option value="week16">Week 16</option>
+                                    <option value="week17">Week 17</option>
+                                    <option value="week18">Week 18</option>
+                                    <option value="week19">Week 19</option>
+                                    <option value="week20">Week 20</option>
+                                    <option value="week21">Week 21</option>
+                                    <option value="week22">Week 22</option>
+                                    <option value="week23">Week 23</option>
+                                    <option value="week24">Week 24</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="newWords">New Words Learned This Week:</label>
+                                <input type="number" id="newWords" name="newWords" min="0" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="totalWords">Total Words Known (Cumulative):</label>
+                                <input type="number" id="totalWords" name="totalWords" min="0" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="usefulWords">Most Useful New Words/Phrases (comma separated):</label>
+                                <textarea id="usefulWords" name="usefulWords" placeholder="e.g., nevertheless, in spite of, to take into account, to figure out"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="submit-btn">Save Vocabulary Data</button>
+                        </form>
+                    </div>
+                </section>
+                
+                <section>
+                    <h2>Vocabulary Progress</h2>
+                    <div class="card">
+                        <div class="chart-container">
+                            <canvas id="vocabChart"></canvas>
+                        </div>
+                        
+                        <div class="vocab-summary">
+                            <h3>Vocabulary Growth Summary</h3>
+                            <table class="vocab-table">
+                                <thead>
+                                    <tr>
+                                        <th>Week</th>
+                                        <th>New Words</th>
+                                        <th>Total Words</th>
+                                        <th>Weekly Growth</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="vocabTableBody">
+                                    <!-- Table rows will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="useful-words">
+                            <h3>Your Most Useful Words Collection</h3>
+                            <p>These are the words and phrases you've identified as most useful in your learning journey:</p>
+                            <div id="wordCloud" class="word-cloud">
+                                <!-- Word items will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>6-Month English Learning Plan for Arabic Speakers</p>
+            <p>Created with ❤️ to support your language learning journey</p>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+    <script>
+        // Initialize chart and data
+        let vocabChart;
+        
+        function initCharts() {
+            const ctx = document.getElementById('vocabChart').getContext('2d');
+            
+            // Get saved vocabulary data
+            const savedData = JSON.parse(localStorage.getItem('vocabularyForm')) || [];
+            
+            // Prepare data for the chart
+            const labels = [];
+            const newWordsData = [];
+            const totalWordsData = [];
+            
+            // Sort data by week number
+            savedData.sort((a, b) => {
+                const weekA = parseInt(a.data.week.replace('week', ''));
+                const weekB = parseInt(b.data.week.replace('week', ''));
+                return weekA - weekB;
+            });
+            
+            // Extract data for chart
+            savedData.forEach(entry => {
+                const weekNumber = entry.data.week.replace('week', '');
+                labels.push(`Week ${weekNumber}`);
+                newWordsData.push(parseInt(entry.data.newWords));
+                totalWordsData.push(parseInt(entry.data.totalWords));
+            });
+            
+            // Create the chart
+            vocabChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'New Words Learned',
+                            data: newWordsData,
+                            backgroundColor: 'rgba(52, 152, 219, 0.7)',
+                            borderColor: 'rgba(52, 152, 219, 1)',
+                            borderWidth: 1,
+                            order: 2
+                        },
+                        {
+                            label: 'Total Words Known',
+                            data: totalWordsData,
+                            type: 'line',
+                            fill: false,
+                            borderColor: 'rgba(46, 204, 113, 1)',
+                            backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                            pointBackgroundColor: 'rgba(46, 204, 113, 1)',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: 'rgba(46, 204, 113, 1)',
+                            tension: 0.1,
+                            order: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Words'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Week'
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Vocabulary Growth Over Time',
+                            font: {
+                                size: 16
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    }
+                }
+            });
+            
+            // Update the vocabulary table
+            updateVocabTable(savedData);
+            
+            // Update the word cloud
+            updateWordCloud(savedData);
+        }
+        
+        function updateCharts() {
+            // Get saved vocabulary data
+            const savedData = JSON.parse(localStorage.getItem('vocabularyForm')) || [];
+            
+            // Prepare data for the chart
+            const labels = [];
+            const newWordsData = [];
+            const totalWordsData = [];
+            
+            // Sort data by week number
+            savedData.sort((a, b) => {
+                const weekA = parseInt(a.data.week.replace('week', ''));
+                const weekB = parseInt(b.data.week.replace('week', ''));
+                return weekA - weekB;
+            });
+            
+            // Extract data for chart
+            savedData.forEach(entry => {
+                const weekNumber = entry.data.week.replace('week', '');
+                labels.push(`Week ${weekNumber}`);
+                newWordsData.push(parseInt(entry.data.newWords));
+                totalWordsData.push(parseInt(entry.data.totalWords));
+            });
+            
+            // Update chart data
+            vocabChart.data.labels = labels;
+            vocabChart.data.datasets[0].data = newWordsData;
+            vocabChart.data.datasets[1].data = totalWordsData;
+            vocabChart.update();
+            
+            // Update the vocabulary table
+            updateVocabTable(savedData);
+            
+            // Update the word cloud
+            updateWordCloud(savedData);
+        }
+        
+        function updateVocabTable(data) {
+            const tableBody = document.getElementById('vocabTableBody');
+            
+            if (!tableBody || data.length === 0) {
+                return;
+            }
+            
+            // Clear existing table rows
+            tableBody.innerHTML = '';
+            
+            // Sort data by week number
+            data.sort((a, b) => {
+                const weekA = parseInt(a.data.week.replace('week', ''));
+                const weekB = parseInt(b.data.week.replace('week', ''));
+                return weekA - weekB;
+            });
+            
+            // Add rows to the table
+            data.forEach((entry, index) => {
+                const weekNumber = entry.data.week.replace('week', '');
+                const newWords = parseInt(entry.data.newWords);
+                const totalWords = parseInt(entry.data.totalWords);
+                
+                // Calculate weekly growth percentage
+                let growthPercentage = 0;
+                if (index > 0) {
+                    const prevTotalWords = parseInt(data[index - 1].data.totalWords);
+                    if (prevTotalWords > 0) {
+                        growthPercentage = ((totalWords - prevTotalWords) / prevTotalWords * 100).toFixed(1);
+                    }
+                }
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>Week ${weekNumber}</td>
+                    <td>${newWords}</td>
+                    <td>${totalWords}</td>
+                    <td>${index > 0 ? growthPercentage + '%' : 'N/A'}</td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+        
+        function updateWordCloud(data) {
+            const wordCloud = document.getElementById('wordCloud');
+            
+            if (!wordCloud) {
+                return;
+            }
+            
+            // Clear existing word items
+            wordCloud.innerHTML = '';
+            
+            // Collect all useful words from all entries
+            const allWords = [];
+            
+            data.forEach(entry => {
+                if (entry.data.usefulWords) {
+                    const words = entry.data.usefulWords.split(',').map(word => word.trim());
+                    allWords.push(...words);
+                }
+            });
+            
+            // Remove duplicates
+            const uniqueWords = [...new Set(allWords)];
+            
+            // Add word items to the cloud
+            uniqueWords.forEach(word => {
+                if (word) {
+                    const wordItem = document.createElement('div');
+                    wordItem.className = 'word-item';
+                    wordItem.textContent = word;
+                    wordCloud.appendChild(wordItem);
+                }
+            });
+            
+            // If no words, show a message
+            if (uniqueWords.length === 0) {
+                wordCloud.innerHTML = '<p>No useful words recorded yet. Start adding your most useful words!</p>';
+            }
+        }
+        
+        // Auto-fill total words based on previous entry
+        document.addEventListener('DOMContentLoaded', function() {
+            const weekSelect = document.getElementById('weekSelect');
+            const newWordsInput = document.getElementById('newWords');
+            const totalWordsInput = document.getElementById('totalWords');
+            
+            if (weekSelect && totalWordsInput) {
+                weekSelect.addEventListener('change', function() {
+                    const selectedWeek = this.value;
+                    if (!selectedWeek) return;
+                    
+                    const weekNumber = parseInt(selectedWeek.replace('week', ''));
+                    
+                    // Get saved vocabulary data
+                    const savedData = JSON.parse(localStorage.getItem('vocabularyForm')) || [];
+                    
+                    // Sort data by week number
+                    savedData.sort((a, b) => {
+                        const weekA = parseInt(a.data.week.replace('week', ''));
+                        const weekB = parseInt(b.data.week.replace('week', ''));
+                        return weekA - weekB;
+                    });
+                    
+                    // Find the previous week's entry
+                    let previousTotalWords = 0;
+                    
+                    for (const entry of savedData) {
+                        const entryWeekNumber = parseInt(entry.data.week.replace('week', ''));
+                        if (entryWeekNumber < weekNumber) {
+                            previousTotalWords = parseInt(entry.data.totalWords);
+                        } else if (entryWeekNumber === weekNumber) {
+                            // If this week already has an entry, fill in the values
+                            newWordsInput.value = entry.data.newWords;
+                            totalWordsInput.value = entry.data.totalWords;
+                            return;
+                        }
+                    }
+                    
+                    // Suggest the previous total as a starting point
+                    if (previousTotalWords > 0) {
+                        totalWordsInput.value = previousTotalWords;
+                        
+                        // Add event listener to update total words when new words change
+                        newWordsInput.addEventListener('input', function() {
+                            const newWords = parseInt(this.value) || 0;
+                            totalWordsInput.value = previousTotalWords + newWords;
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

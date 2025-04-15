@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achievement Milestones - English Learning Tracker</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .tracker-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: var(--primary-color);
+        }
+        
+        .back-link i {
+            margin-right: 5px;
+        }
+        
+        .milestones-list {
+            margin-top: 20px;
+        }
+        
+        .milestone-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        
+        .milestone-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .milestone-checkbox {
+            margin-right: 15px;
+            margin-top: 3px;
+        }
+        
+        .milestone-checkbox input {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .milestone-content {
+            flex: 1;
+        }
+        
+        .milestone-content h3 {
+            margin-bottom: 5px;
+            color: var(--dark-color);
+        }
+        
+        .milestone-content p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .milestone-date {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 5px;
+        }
+        
+        .milestone-completed {
+            background-color: rgba(46, 204, 113, 0.1);
+            border-left: 4px solid var(--secondary-color);
+        }
+        
+        .milestone-completed h3 {
+            text-decoration: line-through;
+            color: #666;
+        }
+        
+        .progress-summary {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .progress-bar-container {
+            width: 100%;
+            height: 30px;
+            background-color: #f8f9fa;
+            border-radius: 15px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 15px;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 500;
+        }
+        
+        .milestone-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .category-filter {
+            background-color: #f8f9fa;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .category-filter:hover, .category-filter.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .celebration {
+            display: none;
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background-color: rgba(46, 204, 113, 0.1);
+            border-radius: var(--border-radius);
+            animation: fadeIn 1s;
+        }
+        
+        .celebration h3 {
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+        
+        .celebration i {
+            font-size: 3rem;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>English Learning Journey</h1>
+            <p>Achievement Milestones Tracker</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="tracker-container">
+                <a href="../index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Main Page</a>
+                
+                <section>
+                    <h2>Achievement Milestones</h2>
+                    <div class="card">
+                        <p>Track your progress by checking off these important milestones as you achieve them throughout your English learning journey.</p>
+                        
+                        <div class="progress-summary">
+                            <h3>Your Progress</h3>
+                            <div class="progress-bar-container">
+                                <div id="progressBar" class="progress-bar" style="width: 0%">0%</div>
+                            </div>
+                            <p id="progressText">You've completed 0 out of 14 milestones</p>
+                        </div>
+                        
+                        <div id="celebration" class="celebration">
+                            <i class="fas fa-trophy"></i>
+                            <h3>Congratulations!</h3>
+                            <p>You've reached a new milestone in your English learning journey!</p>
+                        </div>
+                        
+                        <div class="milestone-categories">
+                            <button class="category-filter active" data-category="all">All Milestones</button>
+                            <button class="category-filter" data-category="listening">Listening</button>
+                            <button class="category-filter" data-category="reading">Reading</button>
+                            <button class="category-filter" data-category="writing">Writing</button>
+                            <button class="category-filter" data-category="speaking">Speaking</button>
+                            <button class="category-filter" data-category="vocabulary">Vocabulary</button>
+                        </div>
+                        
+                        <div class="milestones-list" id="milestonesList">
+                            <!-- Milestones will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>6-Month English Learning Plan for Arabic Speakers</p>
+            <p>Created with ❤️ to support your language learning journey</p>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+    <script>
+        // Define milestones
+        const milestones = [
+            {
+                id: 'milestone1',
+                title: 'Completed first podcast episode with 80%+ comprehension',
+                description: 'You can understand most of a podcast episode without needing to replay sections multiple times.',
+                category: 'listening'
+            },
+            {
+                id: 'milestone2',
+                title: 'Read first article on LingQ without looking up more than 5 words',
+                description: 'You can read an entire article with minimal dictionary use, showing improved vocabulary and comprehension.',
+                category: 'reading'
+            },
+            {
+                id: 'milestone3',
+                title: 'Wrote first 100+ word journal entry',
+                description: 'You can express your thoughts in writing at length without major difficulties.',
+                category: 'writing'
+            },
+            {
+                id: 'milestone4',
+                title: 'Recorded first 2-minute speech without major pauses',
+                description: 'You can speak continuously on a topic for at least 2 minutes with good flow.',
+                category: 'speaking'
+            },
+            {
+                id: 'milestone5',
+                title: 'Learned 100 new words',
+                description: 'You\'ve expanded your vocabulary with 100 new words that you can recognize and use.',
+                category: 'vocabulary'
+            },
+            {
+                id: 'milestone6',
+                title: 'Learned 500 new words',
+                description: 'Your vocabulary has grown significantly, allowing you to understand more complex content.',
+                category: 'vocabulary'
+            },
+            {
+                id: 'milestone7',
+                title: 'Learned 1000 new words',
+                description: 'You\'ve reached an important vocabulary threshold that enables much broader comprehension.',
+                category: 'vocabulary'
+            },
+            {
+                id: 'milestone8',
+                title: 'Completed 25 podcast episodes',
+                description: 'You\'ve consistently practiced listening skills through regular podcast consumption.',
+                category: 'listening'
+            },
+            {
+                id: 'milestone9',
+                title: 'Read for 50+ hours total on LingQ',
+                description: 'You\'ve dedicated significant time to reading practice, building strong comprehension skills.',
+                category: 'reading'
+            },
+            {
+                id: 'milestone10',
+                title: 'Wrote 50+ journal entries',
+                description: 'You\'ve established a consistent writing habit that has significantly improved your skills.',
+                category: 'writing'
+            },
+            {
+                id: 'milestone11',
+                title: 'Can understand YouTube videos without subtitles',
+                description: 'Your listening comprehension has improved to the point where you can follow native content.',
+                category: 'listening'
+            },
+            {
+                id: 'milestone12',
+                title: 'Can read news articles with minimal dictionary use',
+                description: 'You can understand authentic news content with only occasional vocabulary lookups.',
+                category: 'reading'
+            },
+            {
+                id: 'milestone13',
+                title: 'Can write emails/messages without translation help',
+                description: 'You can compose written communications independently without relying on translation tools.',
+                category: 'writing'
+            },
+            {
+                id: 'milestone14',
+                title: 'Can hold a 5+ minute conversation on familiar topics',
+                description: 'You can engage in extended conversations about topics you\'re familiar with.',
+                category: 'speaking'
+            }
+        ];
+        
+        // Function to render milestones
+        function renderMilestones(category = 'all') {
+            const milestonesContainer = document.getElementById('milestonesList');
+            milestonesContainer.innerHTML = '';
+            
+            // Get saved milestone data
+            const savedMilestones = JSON.parse(localStorage.getItem('achievementMilestones')) || {};
+            
+            // Filter milestones by category if needed
+            const filteredMilestones = category === 'all' 
+                ? milestones 
+                : milestones.filter(milestone => milestone.category === category);
+            
+            // Render each milestone
+            filteredMilestones.forEach(milestone => {
+                const isCompleted = savedMilestones[milestone.id] ? true : false;
+                const completedDate = isCompleted ? new Date(savedMilestones[milestone.id]).toLocaleDateString() : '';
+                
+                const milestoneElement = document.createElement('div');
+                milestoneElement.className = `milestone-item ${isCompleted ? 'milestone-completed' : ''}`;
+                milestoneElement.dataset.id = milestone.id;
+                
+                milestoneElement.innerHTML = `
+                    <div class="milestone-checkbox">
+                        <input type="checkbox" id="${milestone.id}" ${isCompleted ? 'checked' : ''}>
+                    </div>
+                    <div class="milestone-content">
+                        <h3>${milestone.title}</h3>
+                        <p>${milestone.description}</p>
+                        ${isCompleted ? `<div class="milestone-date">Completed on: ${completedDate}</div>` : ''}
+                    </div>
+                `;
+                
+                milestonesContainer.appendChild(milestoneElement);
+                
+                // Add event listener to checkbox
+                const checkbox = milestoneElement.querySelector(`#${milestone.id}`);
+                checkbox.addEventListener('change', function() {
+                    const milestoneId = this.id;
+                    const isChecked = this.checked;
+                    
+                    // Update local storage
+                    const savedMilestones = JSON.parse(localStorage.getItem('achievementMilestones')) || {};
+                    
+                    if (isChecked) {
+                        savedMilestones[milestoneId] = new Date().toISOString();
+                        milestoneElement.classList.add('milestone-completed');
+                        
+                        // Add completion date
+                        const dateElement = document.createElement('div');
+                        dateElement.className = 'milestone-date';
+                        dateElement.textContent = `Completed on: ${new Date().toLocaleDateString()}`;
+                        milestoneElement.querySelector('.milestone-content').appendChild(dateElement);
+                        
+                        // Show celebration
+                        document.getElementById('celebration').style.display = 'block';
+                        setTimeout(() => {
+                            document.getElementById('celebration').style.display = 'none';
+                        }, 3000);
+                    } else {
+                        delete savedMilestones[milestoneId];
+                        milestoneElement.classList.remove('milestone-completed');
+                        
+                        // Remove completion date
+                        const dateElement = milestoneElement.querySelector('.milestone-date');
+                        if (dateElement) {
+                            dateElement.remove();
+                        }
+                    }
+                    
+                    localStorage.setItem('achievementMilestones', JSON.stringify(savedMilestones));
+                    
+                    // Update progress bar
+                    updateProgressBar();
+                });
+            });
+            
+            // Update progress bar
+            updateProgressBar();
+        }
+        
+        // Function to update progress bar
+        function updateProgressBar() {
+            const savedMilestones = JSON.parse(localStorage.getItem('achievementMilestones')) || {};
+            const completedCount = Object.keys(savedMilestones).length;
+            const totalCount = milestones.length;
+            const progressPercentage = Math.round((completedCount / totalCount) * 100);
+            
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            
+            progressBar.style.width = `${progressPercentage}%`;
+            progressBar.textContent = `${progressPercentage}%`;
+            progressText.textContent = `You've completed ${completedCount} out of ${totalCount} milestones`;
+        }
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Render initial milestones
+            renderMilestones();
+            
+            // Add event listeners to category filters
+            const categoryFilters = document.querySelectorAll('.category-filter');
+            categoryFilters.forEach(filter => {
+                filter.addEventListener('click', function() {
+                    // Remove active class from all filters
+                    categoryFilters.forEach(f => f.classList.remove('active'));
+                    
+                    // Add active class to clicked filter
+                    this.classList.add('active');
+                    
+                    // Render milestones for selected category
+                    const category = this.dataset.category;
+                    renderMilestones(category);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

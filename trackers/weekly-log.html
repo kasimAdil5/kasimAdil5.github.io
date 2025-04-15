@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Activity Log - English Learning Tracker</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .tracker-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .week-selector {
+            margin-bottom: 20px;
+        }
+        
+        .week-selector select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+        }
+        
+        .activity-group {
+            margin-bottom: 20px;
+        }
+        
+        .activity-row {
+            margin-bottom: 15px;
+        }
+        
+        .activity-row label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .activity-row input, .activity-row textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+        }
+        
+        .activity-row textarea {
+            min-height: 80px;
+        }
+        
+        .submit-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .submit-btn:hover {
+            background-color: #1a6aa8;
+        }
+        
+        .success-message {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 10px;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: var(--primary-color);
+        }
+        
+        .back-link i {
+            margin-right: 5px;
+        }
+        
+        .week-info {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+        }
+        
+        .week-info h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>English Learning Journey</h1>
+            <p>Weekly Activity Log Tracker</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="tracker-container">
+                <a href="../index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Main Page</a>
+                
+                <section>
+                    <h2>Weekly Activity Log</h2>
+                    <div class="card">
+                        <p>Use this tracker to record your weekly activities and progress. Complete it at the end of each week to maintain consistency and monitor your learning journey.</p>
+                        
+                        <form id="weeklyActivityForm" class="tracking-form">
+                            <div class="week-selector">
+                                <label for="weekSelect"><h3>Select Week</h3></label>
+                                <select name="week" id="weekSelect" required onchange="updateWeekInfo()">
+                                    <option value="">Select a week</option>
+                                    <option value="week1">Week 1</option>
+                                    <option value="week2">Week 2</option>
+                                    <option value="week3">Week 3</option>
+                                    <option value="week4">Week 4</option>
+                                    <option value="week5">Week 5</option>
+                                    <option value="week6">Week 6</option>
+                                    <option value="week7">Week 7</option>
+                                    <option value="week8">Week 8</option>
+                                    <option value="week9">Week 9</option>
+                                    <option value="week10">Week 10</option>
+                                    <option value="week11">Week 11</option>
+                                    <option value="week12">Week 12</option>
+                                    <option value="week13">Week 13</option>
+                                    <option value="week14">Week 14</option>
+                                    <option value="week15">Week 15</option>
+                                    <option value="week16">Week 16</option>
+                                    <option value="week17">Week 17</option>
+                                    <option value="week18">Week 18</option>
+                                    <option value="week19">Week 19</option>
+                                    <option value="week20">Week 20</option>
+                                    <option value="week21">Week 21</option>
+                                    <option value="week22">Week 22</option>
+                                    <option value="week23">Week 23</option>
+                                    <option value="week24">Week 24</option>
+                                </select>
+                            </div>
+                            
+                            <div id="weekInfo" class="week-info" style="display: none;">
+                                <h4 id="weekTitle">Week 1: Foundation Building</h4>
+                                <div id="weekDescription">
+                                    <p><strong>Focus:</strong> Listening and Reading</p>
+                                    <ul>
+                                        <li><strong>Listening:</strong> 2 dalilk4english.com podcast episodes</li>
+                                        <li><strong>Reading:</strong> 15 minutes daily on LingQ with beginner-level content</li>
+                                        <li><strong>Writing:</strong> Simple daily journal (3-5 sentences)</li>
+                                        <li><strong>Speaking:</strong> Read aloud podcast transcripts for 5 minutes daily</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-group">
+                                <h3>Activities Completed</h3>
+                                
+                                <div class="activity-row">
+                                    <label for="podcasts">Podcasts completed:</label>
+                                    <input type="text" id="podcasts" name="podcasts" placeholder="e.g., Episode 5 and 6 from dalilk4english.com">
+                                </div>
+                                
+                                <div class="activity-row">
+                                    <label for="reading">Pages/minutes read on LingQ:</label>
+                                    <input type="text" id="reading" name="reading" placeholder="e.g., 20 minutes daily, 140 minutes total">
+                                </div>
+                                
+                                <div class="activity-row">
+                                    <label for="journal">Journal entries written:</label>
+                                    <input type="text" id="journal" name="journal" placeholder="e.g., 5 entries, 30 sentences total">
+                                </div>
+                                
+                                <div class="activity-row">
+                                    <label for="speaking">Speaking practice minutes:</label>
+                                    <input type="text" id="speaking" name="speaking" placeholder="e.g., 10 minutes daily, 70 minutes total">
+                                </div>
+                                
+                                <div class="activity-row">
+                                    <label for="newWords">New words learned:</label>
+                                    <input type="text" id="newWords" name="newWords" placeholder="e.g., 35 new words">
+                                </div>
+                            </div>
+                            
+                            <div class="activity-group">
+                                <h3>Reflection</h3>
+                                
+                                <div class="activity-row">
+                                    <label for="challenges">Challenges faced:</label>
+                                    <textarea id="challenges" name="challenges" placeholder="What difficulties did you encounter this week?"></textarea>
+                                </div>
+                                
+                                <div class="activity-row">
+                                    <label for="wins">Wins this week:</label>
+                                    <textarea id="wins" name="wins" placeholder="What achievements are you proud of this week?"></textarea>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="submit-btn">Save Weekly Log</button>
+                        </form>
+                    </div>
+                </section>
+                
+                <section>
+                    <h2>Previous Logs</h2>
+                    <div class="card">
+                        <div id="previousLogs">
+                            <p>Your saved weekly logs will appear here.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>6-Month English Learning Plan for Arabic Speakers</p>
+            <p>Created with ❤️ to support your language learning journey</p>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+    <script>
+        // Week information data
+        const weekData = {
+            week1: {
+                title: "Week 1: Foundation Building - Listening and Reading Focus",
+                description: `
+                    <p><strong>Focus:</strong> Listening and Reading</p>
+                    <ul>
+                        <li><strong>Listening:</strong> 2 dalilk4english.com podcast episodes</li>
+                        <li><strong>Reading:</strong> 15 minutes daily on LingQ with beginner-level content</li>
+                        <li><strong>Writing:</strong> Simple daily journal (3-5 sentences)</li>
+                        <li><strong>Speaking:</strong> Read aloud podcast transcripts for 5 minutes daily</li>
+                    </ul>
+                `
+            },
+            week2: {
+                title: "Week 2: Foundation Building - Listening and Reading Focus",
+                description: `
+                    <p><strong>Focus:</strong> Listening and Reading</p>
+                    <ul>
+                        <li><strong>Listening:</strong> 2 dalilk4english.com podcast episodes</li>
+                        <li><strong>Reading:</strong> 15 minutes daily on LingQ with beginner-level content</li>
+                        <li><strong>Writing:</strong> Simple daily journal (3-5 sentences)</li>
+                        <li><strong>Speaking:</strong> Read aloud podcast transcripts for 5 minutes daily</li>
+                    </ul>
+                `
+            },
+            week3: {
+                title: "Week 3: Foundation Building - Speaking and Writing Introduction",
+                description: `
+                    <p><strong>Focus:</strong> Speaking and Writing</p>
+                    <ul>
+                        <li><strong>Listening:</strong> Continue with 2 podcast episodes weekly</li>
+                        <li><strong>Reading:</strong> Increase to 20 minutes daily on LingQ</li>
+                        <li><strong>Writing:</strong> Daily journal (5-7 sentences) + summarize one podcast episode</li>
+                        <li><strong>Speaking:</strong> Shadow podcast speakers for 10 minutes daily</li>
+                    </ul>
+                `
+            },
+            week4: {
+                title: "Week 4: Foundation Building - Speaking and Writing Introduction",
+                description: `
+                    <p><strong>Focus:</strong> Speaking and Writing</p>
+                    <ul>
+                        <li><strong>Listening:</strong> Continue with 2 podcast episodes weekly</li>
+                        <li><strong>Reading:</strong> Increase to 20 minutes daily on LingQ</li>
+                        <li><strong>Writing:</strong> Daily journal (5-7 sentences) + summarize one podcast episode</li>
+                        <li><strong>Speaking:</strong> Shadow podcast speakers for 10 minutes daily</li>
+                    </ul>
+                `
+            },
+            week5: {
+                title: "Week 5: Building Vocabulary - Content Exploration",
+                description: `
+                    <p><strong>Focus:</strong> Content Exploration</p>
+                    <ul>
+                        <li><strong>Listening:</strong> 3 dalilk4english.com podcast episodes weekly</li>
+                        <li><strong>Reading:</strong> 20 minutes daily on LingQ with content matching your interests</li>
+                        <li><strong>Writing:</strong> Create vocabulary lists from your reading + daily journal</li>
+                        <li><strong>Speaking:</strong> Record yourself summarizing what you read for 5 minutes daily</li>
+                    </ul>
+                `
+            },
+            week6: {
+                title: "Week 6: Building Vocabulary - Content Exploration",
+                description: `
+                    <p><strong>Focus:</strong> Content Exploration</p>
+                    <ul>
+                        <li><strong>Listening:</strong> 3 dalilk4english.com podcast episodes weekly</li>
+                        <li><strong>Reading:</strong> 20 minutes daily on LingQ with content matching your interests</li>
+                        <li><strong>Writing:</strong> Create vocabulary lists from your reading + daily journal</li>
+                        <li><strong>Speaking:</strong> Record yourself summarizing what you read for 5 minutes daily</li>
+                    </ul>
+                `
+            },
+            week7: {
+                title: "Week 7: Building Vocabulary - Active Usage",
+                description: `
+                    <p><strong>Focus:</strong> Active Usage</p>
+                    <ul>
+                        <li><strong>Listening:</strong> Mix podcast episodes with English songs/videos</li>
+                        <li><strong>Reading:</strong> 25 minutes daily on LingQ, focusing on saving new vocabulary</li>
+                        <li><strong>Writing:</strong> Write short paragraphs using your new vocabulary</li>
+                        <li><strong>Speaking:</strong> Practice pronunciation of difficult words + read your written paragraphs aloud</li>
+                    </ul>
+                `
+            },
+            week8: {
+                title: "Week 8: Building Vocabulary - Active Usage",
+                description: `
+                    <p><strong>Focus:</strong> Active Usage</p>
+                    <ul>
+                        <li><strong>Listening:</strong> Mix podcast episodes with English songs/videos</li>
+                        <li><strong>Reading:</strong> 25 minutes daily on LingQ, focusing on saving new vocabulary</li>
+                        <li><strong>Writing:</strong> Write short paragraphs using your new vocabulary</li>
+                        <li><strong>Speaking:</strong> Practice pronunciation of difficult words + read your written paragraphs aloud</li>
+                    </ul>
+                `
+            }
+            // Weeks 9-24 would follow the same pattern
+        };
+        
+        // Add data for weeks 9-24 based on the 6-month plan
+        weekData.week9 = {
+            title: "Week 9: Conversation Building - Dialogue Focus",
+            description: `
+                <p><strong>Focus:</strong> Dialogue Focus</p>
+                <ul>
+                    <li><strong>Listening:</strong> Focus on conversation-based podcasts from dalilk4english.com</li>
+                    <li><strong>Reading:</strong> Dialogue-heavy content on LingQ for 25 minutes daily</li>
+                    <li><strong>Writing:</strong> Create your own dialogues based on podcast scenarios</li>
+                    <li><strong>Speaking:</strong> Role-play both sides of conversations from podcasts</li>
+                </ul>
+            `
+        };
+        
+        // Function to update week information based on selection
+        function updateWeekInfo() {
+            const weekSelect = document.getElementById('weekSelect');
+            const weekInfo = document.getElementById('weekInfo');
+            const weekTitle = document.getElementById('weekTitle');
+            const weekDescription = document.getElementById('weekDescription');
+            
+            if (weekSelect.value) {
+                const selectedWeek = weekSelect.value;
+                
+                if (weekData[selectedWeek]) {
+                    weekTitle.textContent = weekData[selectedWeek].title;
+                    weekDescription.innerHTML = weekData[selectedWeek].description;
+                    weekInfo.style.display = 'block';
+                } else {
+                    // For weeks not explicitly defined, show a generic message
+                    const weekNumber = selectedWeek.replace('week', '');
+                    let monthNumber = Math.ceil(weekNumber / 4);
+                    let monthFocus = "";
+                    
+                    switch(monthNumber) {
+                        case 1: monthFocus = "Foundation Building"; break;
+                        case 2: monthFocus = "Building Vocabulary"; break;
+                        case 3: monthFocus = "Conversation Building"; break;
+                        case 4: monthFocus = "Fluency Development"; break;
+                        case 5: monthFocus = "Content Expansion"; break;
+                        case 6: monthFocus = "Integration and Real-World Application"; break;
+                    }
+                    
+                    weekTitle.textContent = `Week ${weekNumber}: ${monthFocus}`;
+                    weekDescription.innerHTML = `
+                        <p>Refer to the monthly plan in the main page for detailed activities for this week.</p>
+                    `;
+                    weekInfo.style.display = 'block';
+                }
+            } else {
+                weekInfo.style.display = 'none';
+            }
+        }
+        
+        // Function to load and display previous logs
+        function loadPreviousLogs() {
+            const previousLogsContainer = document.getElementById('previousLogs');
+            const savedLogs = JSON.parse(localStorage.getItem('weeklyActivityForm')) || [];
+            
+            if (savedLogs.length === 0) {
+                previousLogsContainer.innerHTML = '<p>No logs saved yet. Complete your first weekly log above!</p>';
+                return;
+            }
+            
+            // Sort logs by week number
+            savedLogs.sort((a, b) => {
+                const weekA = parseInt(a.data.week.replace('week', ''));
+                const weekB = parseInt(b.data.week.replace('week', ''));
+                return weekB - weekA; // Most recent first
+            });
+            
+            let logsHTML = '<h3>Your Weekly Logs</h3>';
+            
+            savedLogs.forEach(log => {
+                const weekNumber = log.data.week.replace('week', '');
+                const date = new Date(log.date);
+                const formattedDate = date.toLocaleDateString();
+                
+                logsHTML += `
+                    <div class="previous-log">
+                        <h4>Week ${weekNumber} (Saved on ${formattedDate})</h4>
+                        <p><strong>Podcasts:</strong> ${log.data.podcasts || 'None recorded'}</p>
+                        <p><strong>Reading:</strong> ${log.data.reading || 'None recorded'}</p>
+                        <p><strong>Journal entries:</strong> ${log.data.journal || 'None recorded'}</p>
+                        <p><strong>Speaking practice:</strong> ${log.data.speaking || 'None recorded'}</p>
+                        <p><strong>New words:</strong> ${log.data.newWords || 'None recorded'}</p>
+                        <p><strong>Challenges:</strong> ${log.data.challenges || 'None recorded'}</p>
+                        <p><strong>Wins:</strong> ${log.data.wins || 'None recorded'}</p>
+                        <hr>
+                    </div>
+                `;
+            });
+            
+            previousLogsContainer.innerHTML = logsHTML;
+        }
+        
+        // Load previous logs when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPreviousLogs();
+            
+            // Add event listener for form submission to reload logs
+            const form = document.getElementById('weeklyActivityForm');
+            if (form) {
+                form.addEventListener('submit', function() {
+                    // Reload logs after a short delay to allow storage to update
+                    setTimeout(loadPreviousLogs, 500);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

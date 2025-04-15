@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Speed Tracker - English Learning Tracker</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .tracker-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: var(--primary-color);
+        }
+        
+        .back-link i {
+            margin-right: 5px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+        }
+        
+        .submit-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .submit-btn:hover {
+            background-color: #1a6aa8;
+        }
+        
+        .success-message {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 10px;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .chart-container {
+            margin-top: 30px;
+            height: 400px;
+        }
+        
+        .reading-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+        
+        .reading-table th, .reading-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .reading-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        
+        .reading-table tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .reading-level {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+            text-align: center;
+        }
+        
+        .reading-level h3 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .level-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            position: relative;
+        }
+        
+        .level-marker {
+            position: relative;
+            text-align: center;
+            width: 20%;
+        }
+        
+        .level-marker::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 10px;
+            background-color: #ddd;
+        }
+        
+        .level-progress {
+            position: absolute;
+            top: -5px;
+            left: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+        
+        .current-level {
+            position: absolute;
+            top: -30px;
+            transform: translateX(-50%);
+            background-color: var(--primary-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+        
+        .timer-container {
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .timer-display {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 20px 0;
+            color: var(--primary-color);
+        }
+        
+        .timer-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .timer-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .start-btn {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .stop-btn {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        
+        .reset-btn {
+            background-color: #f8f9fa;
+            color: var(--dark-color);
+        }
+        
+        .timer-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .timer-instructions {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .timer-instructions h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .timer-instructions ol {
+            padding-left: 20px;
+        }
+        
+        .timer-instructions li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>English Learning Journey</h1>
+            <p>Reading Speed Tracker</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="tracker-container">
+                <a href="../index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Main Page</a>
+                
+                <section>
+                    <h2>Reading Speed Tracker</h2>
+                    <div class="card">
+                        <p>Track your reading speed progress over time. Measure how many words you can read in 5 minutes and calculate your words per minute (WPM).</p>
+                        
+                        <div class="timer-container">
+                            <div class="timer-instructions">
+                                <h4>How to Measure Your Reading Speed:</h4>
+                                <ol>
+                                    <li>Find a text in English at your current level (article, book chapter, etc.)</li>
+                                    <li>Count the total number of words in the text (or use a word counter tool)</li>
+                                    <li>Click "Start Timer" and begin reading</li>
+                                    <li>Read at your normal pace, focusing on comprehension</li>
+                                    <li>When you finish reading, click "Stop Timer"</li>
+                                    <li>Enter the number of words you read in the form below</li>
+                                </ol>
+                            </div>
+                            
+                            <h3>5-Minute Reading Timer</h3>
+                            <div class="timer-display" id="timerDisplay">05:00</div>
+                            <div class="timer-buttons">
+                                <button id="startBtn" class="timer-btn start-btn">Start Timer</button>
+                                <button id="stopBtn" class="timer-btn stop-btn" disabled>Stop Timer</button>
+                                <button id="resetBtn" class="timer-btn reset-btn">Reset Timer</button>
+                            </div>
+                        </div>
+                        
+                        <form id="readingSpeedForm" class="tracking-form">
+                            <div class="form-group">
+                                <label for="weekSelect">Select Week:</label>
+                                <select id="weekSelect" name="week" required>
+                                    <option value="">Select a week</option>
+                                    <option value="week1">Week 1</option>
+                                    <option value="week4">Week 4</option>
+                                    <option value="week8">Week 8</option>
+                                    <option value="week12">Week 12</option>
+                                    <option value="week16">Week 16</option>
+                                    <option value="week20">Week 20</option>
+                                    <option value="week24">Week 24</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="wordsRead">Words Read in 5 Minutes:</label>
+                                <input type="number" id="wordsRead" name="wordsRead" min="1" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contentType">Content Type:</label>
+                                <input type="text" id="contentType" name="contentType" placeholder="e.g., News article, LingQ story, Book chapter" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="notes">Notes (optional):</label>
+                                <textarea id="notes" name="notes" placeholder="Any observations about your reading experience..."></textarea>
+                            </div>
+                            
+                            <button type="submit" class="submit-btn">Save Reading Speed Data</button>
+                        </form>
+                    </div>
+                </section>
+                
+                <section>
+                    <h2>Reading Speed Progress</h2>
+                    <div class="card">
+                        <div class="chart-container">
+                            <canvas id="readingSpeedChart"></canvas>
+                        </div>
+                        
+                        <div class="reading-level">
+                            <h3>Your Current Reading Level</h3>
+                            <p id="levelDescription">Based on your most recent reading speed measurement.</p>
+                            
+                            <div class="level-indicator">
+                                <div class="level-marker">
+                                    <span>Beginner</span>
+                                    <br>
+                                    <small>100 WPM</small>
+                                </div>
+                                <div class="level-marker">
+                                    <span>Elementary</span>
+                                    <br>
+                                    <small>150 WPM</small>
+                                </div>
+                                <div class="level-marker">
+                                    <span>Intermediate</span>
+                                    <br>
+                                    <small>200 WPM</small>
+                                </div>
+                                <div class="level-marker">
+                                    <span>Advanced</span>
+                                    <br>
+                                    <small>250 WPM</small>
+                                </div>
+                                <div class="level-marker">
+                                    <span>Fluent</span>
+                                    <br>
+                                    <small>300+ WPM</small>
+                                </div>
+                                
+                                <div id="levelProgress" class="level-progress" style="width: 0%"></div>
+                                <div id="currentLevel" class="current-level" style="left: 0%">0 WPM</div>
+                            </div>
+                        </div>
+                        
+                        <table class="reading-table">
+                            <thead>
+                                <tr>
+                                    <th>Week</th>
+                                    <th>Words in 5 min</th>
+                                    <th>WPM</th>
+                                    <th>Content Type</th>
+                                    <th>Improvement</th>
+                                </tr>
+                            </thead>
+                            <tbody id="readingTableBody">
+                                <!-- Table rows will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>6-Month English Learning Plan for Arabic Speakers</p>
+            <p>Created with ❤️ to support your language learning journey</p>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+    <script>
+        // Initialize chart and data
+        let readingSpeedChart;
+        
+        // Timer functionality
+        let timerInterval;
+        let timeLeft = 300; // 5 minutes in seconds
+        const timerDisplay = document.getElementById('timerDisplay');
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        
+        // Format time as MM:SS
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+        }
+        
+        // Update timer display
+        function updateTimer() {
+            timeLeft--;
+            timerDisplay.textContent = formatTime(timeLeft);
+            
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                timerDisplay.textContent = "00:00";
+                startBtn.disabled = true;
+                stopBtn.disabled = true;
+                alert("Time's up! Enter the number of words you read in the form below.");
+            }
+        }
+        
+        // Start timer
+        startBtn.addEventListener('click', function() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(updateTimer, 1000);
+            startBtn.disabled = true;
+            stopBtn.disabled = false;
+        });
+        
+        // Stop timer
+        stopBtn.addEventListener('click', function() {
+            clearInterval(timerInterval);
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+        });
+        
+        // Reset timer
+        resetBtn.addEventListener('click', function() {
+            clearInterval(timerInterval);
+            timeLeft = 300;
+            timerDisplay.textContent = formatTime(timeLeft);
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+        });
+        
+        function initCharts() {
+            const ctx = document.getElementById('readingSpeedChart').getContext('2d');
+            
+            // Get saved reading speed data
+            const savedData = JSON.parse(localStorage.getItem('readingSpeedForm')) || [];
+            
+            // Prepare data for the chart
+            const labels = [];
+            const wpmData = [];
+            
+            // Sort data by week number
+            savedData.sort((a, b) => {
+                const weekA = parseInt(a.data.week.replace('week', ''));
+                const weekB = parseInt(b.data.week.replace('week', ''));
+                return weekA - weekB;
+            });
+            
+            // Extract data for chart
+            savedData.forEach(entry => {
+                const weekNumber = entry.data.week.replace('week', '');
+                labels.push(`Week ${weekNumber}`);
+                
+                // Calculate WPM
+                const wordsRead = parseInt(entry.data.wordsRead);
+                const wpm = Math.round(wordsRead / 5);
+                wpmData.push(wpm);
+            });
+            
+            // Create the chart
+            readingSpeedChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Reading Speed (WPM)',
+                            data: wpmData,
+                            borderColor: 'rgba(52, 152, 219, 1)',
+                            backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                            tension: 0.3,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Words Per Minute (WPM)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Week'
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Reading Speed Progress Over Time',
+                            font: {
+                                size: 16
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.parsed.y} WPM`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Update the reading table
+            updateReadingTable(savedData);
+            
+            // Update the reading level indicator
+            updateReadingLevel(savedData);
+        }
+        
+        function updateCharts() {
+            // Get saved reading speed data
+            const savedData = JSON.parse(localStorage.getItem('readingSpeedForm')) || [];
+            
+            // Prepare data for the chart
+            const labels = [];
+            const wpmData = [];
+            
+            // Sort data by week number
+            savedData.sort((a, b) => {
+                const weekA = parseInt(a.data.week.replace('week', ''));
+                const weekB = parseInt(b.data.week.replace('week', ''));
+                return weekA - weekB;
+            });
+            
+            // Extract data for chart
+            savedData.forEach(entry => {
+                const weekNumber = entry.data.week.replace('week', '');
+                labels.push(`Week ${weekNumber}`);
+                
+                // Calculate WPM
+                const wordsRead = parseInt(entry.data.wordsRead);
+                const wpm = Math.round(wordsRead / 5);
+                wpmData.push(wpm);
+            });
+            
+            // Update chart data
+            readingSpeedChart.data.labels = labels;
+            readingSpeedChart.data.datasets[0].data = wpmData;
+            readingSpeedChart.update();
+            
+            // Update the reading table
+            updateReadingTable(savedData);
+            
+            // Update the reading level indicator
+            updateReadingLevel(savedData);
+        }
+        
+        function updateReadingTable(data) {
+            const tableBody = document.getElementById('readingTableBody');
+            
+            if (!tableBody || data.length === 0) {
+                return;
+            }
+            
+            // Clear existing table rows
+            tableBody.innerHTML = '';
+            
+            // Sort data by week number
+            data.sort((a, b) => {
+                const weekA = parseInt(a.data.week.replace('week', ''));
+                const weekB = parseInt(b.data.week.replace('week', ''));
+                return weekA - weekB;
+            });
+            
+            // Add rows to the table
+            data.forEach((entry, index) => {
+                const weekNumber = entry.data.week.replace('week', '');
+                const wordsRead = parseInt(entry.data.wordsRead);
+                const wpm = Math.round(wordsRead / 5);
+                const contentType = entry.data.contentType;
+                
+                // Calculate improvement percentage
+                let improvement = 'N/A';
+                if (index > 0) {
+                    const prevWordsRead = parseInt(data[index - 1].data.wordsRead);
+                    const prevWpm = Math.round(prevWordsRead / 5);
+                    const improvementPercent = ((wpm - prevWpm) / prevWpm * 100).toFixed(1);
+                    improvement = improvementPercent > 0 ? `+${improvementPercent}%` : `${improvementPercent}%`;
+                }
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>Week ${weekNumber}</td>
+                    <td>${wordsRead}</td>
+                    <td>${wpm}</td>
+                    <td>${contentType}</td>
+                    <td>${improvement}</td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+        
+        function updateReadingLevel(data) {
+            if (data.length === 0) {
+                return;
+            }
+            
+            // Get the most recent reading speed data
+            const latestData = data.sort((a, b) => {
+                const dateA = new Date(a.date);
+                const dateB = new Date(b.date);
+                return dateB - dateA;
+            })[0];
+            
+            // Calculate WPM
+            const wordsRead = parseInt(latestData.data.wordsRead);
+            const wpm = Math.round(wordsRead / 5);
+            
+            // Update the level indicator
+            const levelProgress = document.getElementById('levelProgress');
+            const currentLevel = document.getElementById('currentLevel');
+            const levelDescription = document.getElementById('levelDescription');
+            
+            // Calculate progress percentage (max 100%)
+            let progressPercentage = Math.min((wpm / 300) * 100, 100);
+            
+            // Update the progress bar and current level indicator
+            levelProgress.style.width = `${progressPercentage}%`;
+            currentLevel.style.left = `${progressPercentage}%`;
+            currentLevel.textContent = `${wpm} WPM`;
+            
+            // Determine reading level description
+            let levelText = '';
+            if (wpm < 100) {
+                levelText = 'Beginner: You\'re building a foundation. Keep practicing!';
+            } else if (wpm < 150) {
+                levelText = 'Elementary: You\'re making good progress. Continue regular reading practice.';
+            } else if (wpm < 200) {
+                levelText = 'Intermediate: You can read at a moderate pace. Focus on more complex texts.';
+            } else if (wpm < 250) {
+                levelText = 'Advanced: You\'re reading at a good pace. Challenge yourself with native content.';
+            } else {
+                levelText = 'Fluent: Excellent reading speed! You\'re approaching native-like reading fluency.';
+            }
+            
+            levelDescription.textContent = levelText;
+        }
+        
+        // Auto-calculate WPM when words read is entered
+        document.addEventListener('DOMContentLoaded', function() {
+            const wordsReadInput = document.getElementById('wordsRead');
+            
+            if (wordsReadInput) {
+                wordsReadInput.addEventListener('input', function() {
+                    const wordsRead = parseInt(this.value) || 0;
+                    const wpm = Math.round(wordsRead / 5);
+                    
+                    // You could display this somewhere if needed
+                    console.log(`Current reading speed: ${wpm} WPM`);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

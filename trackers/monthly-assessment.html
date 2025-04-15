@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monthly Skill Assessment - English Learning Tracker</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .tracker-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .rating-group {
+            margin-bottom: 20px;
+        }
+        
+        .rating-scale {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+        }
+        
+        .rating-scale h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .rating-scale ul {
+            list-style-type: none;
+        }
+        
+        .rating-scale li {
+            margin-bottom: 5px;
+        }
+        
+        .rating-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .rating-label {
+            width: 150px;
+            font-weight: 500;
+        }
+        
+        .rating-input {
+            flex: 1;
+        }
+        
+        .rating-input input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+        }
+        
+        .notes-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            min-height: 100px;
+            margin-bottom: 20px;
+        }
+        
+        .submit-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .submit-btn:hover {
+            background-color: #1a6aa8;
+        }
+        
+        .chart-container {
+            margin-top: 40px;
+            height: 400px;
+        }
+        
+        .success-message {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 10px;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: var(--primary-color);
+        }
+        
+        .back-link i {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>English Learning Journey</h1>
+            <p>Monthly Skill Assessment Tracker</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="tracker-container">
+                <a href="../index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Main Page</a>
+                
+                <section>
+                    <h2>Monthly Skill Assessment</h2>
+                    <div class="card">
+                        <p>Use this tracker to monitor your progress throughout your 6-month English learning journey. Complete the assessment at the end of each month to see your improvement over time.</p>
+                        
+                        <div class="rating-scale">
+                            <h4>Rating Scale</h4>
+                            <ul>
+                                <li><strong>1-2:</strong> Beginner (Struggle with basic concepts)</li>
+                                <li><strong>3-4:</strong> Elementary (Can understand/produce simple content with effort)</li>
+                                <li><strong>5-6:</strong> Intermediate (Comfortable with everyday topics)</li>
+                                <li><strong>7-8:</strong> Upper Intermediate (Can handle complex topics with some difficulty)</li>
+                                <li><strong>9-10:</strong> Advanced (Near-native fluency in this skill)</li>
+                            </ul>
+                        </div>
+                        
+                        <form id="monthlyAssessmentForm" class="tracking-form persistent-form">
+                            <div class="rating-group">
+                                <h3>Select Month</h3>
+                                <select name="month" id="monthSelect" required>
+                                    <option value="">Select a month</option>
+                                    <option value="start">Starting Point</option>
+                                    <option value="month1">Month 1</option>
+                                    <option value="month2">Month 2</option>
+                                    <option value="month3">Month 3</option>
+                                    <option value="month4">Month 4</option>
+                                    <option value="month5">Month 5</option>
+                                    <option value="month6">Month 6</option>
+                                </select>
+                            </div>
+                            
+                            <div class="rating-group">
+                                <h3>Skill Ratings (1-10)</h3>
+                                
+                                <div class="rating-row">
+                                    <div class="rating-label">Listening</div>
+                                    <div class="rating-input">
+                                        <input type="number" name="listening" min="1" max="10" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="rating-row">
+                                    <div class="rating-label">Reading</div>
+                                    <div class="rating-input">
+                                        <input type="number" name="reading" min="1" max="10" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="rating-row">
+                                    <div class="rating-label">Writing</div>
+                                    <div class="rating-input">
+                                        <input type="number" name="writing" min="1" max="10" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="rating-row">
+                                    <div class="rating-label">Speaking</div>
+                                    <div class="rating-input">
+                                        <input type="number" name="speaking" min="1" max="10" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="rating-row">
+                                    <div class="rating-label">Overall Confidence</div>
+                                    <div class="rating-input">
+                                        <input type="number" name="confidence" min="1" max="10" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="rating-group">
+                                <h3>Notes</h3>
+                                <textarea name="notes" class="notes-input" placeholder="Add any notes about your progress this month..."></textarea>
+                            </div>
+                            
+                            <button type="submit" class="submit-btn">Save Assessment</button>
+                        </form>
+                    </div>
+                </section>
+                
+                <section>
+                    <h2>Progress Chart</h2>
+                    <div class="card">
+                        <div class="chart-container">
+                            <canvas id="skillsChart"></canvas>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>6-Month English Learning Plan for Arabic Speakers</p>
+            <p>Created with ❤️ to support your language learning journey</p>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+    <script>
+        // Chart initialization and update functions
+        function initCharts() {
+            const ctx = document.getElementById('skillsChart').getContext('2d');
+            
+            // Define the months for the x-axis
+            const labels = ['Start', 'Month 1', 'Month 2', 'Month 3', 'Month 4', 'Month 5', 'Month 6'];
+            
+            // Get saved assessment data
+            const savedData = JSON.parse(localStorage.getItem('monthlyAssessmentForm')) || [];
+            
+            // Prepare data for the chart
+            const listeningData = [];
+            const readingData = [];
+            const writingData = [];
+            const speakingData = [];
+            const confidenceData = [];
+            
+            // Map saved data to chart datasets
+            labels.forEach(month => {
+                const monthKey = month.toLowerCase().replace(' ', '');
+                const monthData = savedData.find(entry => entry.data.month === monthKey);
+                
+                if (monthData) {
+                    listeningData.push(parseInt(monthData.data.listening));
+                    readingData.push(parseInt(monthData.data.reading));
+                    writingData.push(parseInt(monthData.data.writing));
+                    speakingData.push(parseInt(monthData.data.speaking));
+                    confidenceData.push(parseInt(monthData.data.confidence));
+                } else {
+                    listeningData.push(null);
+                    readingData.push(null);
+                    writingData.push(null);
+                    speakingData.push(null);
+                    confidenceData.push(null);
+                }
+            });
+            
+            // Create the chart
+            window.skillsChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Listening',
+                            data: listeningData,
+                            borderColor: '#3498db',
+                            backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                            tension: 0.3,
+                            fill: false
+                        },
+                        {
+                            label: 'Reading',
+                            data: readingData,
+                            borderColor: '#2ecc71',
+                            backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                            tension: 0.3,
+                            fill: false
+                        },
+                        {
+                            label: 'Writing',
+                            data: writingData,
+                            borderColor: '#f39c12',
+                            backgroundColor: 'rgba(243, 156, 18, 0.1)',
+                            tension: 0.3,
+                            fill: false
+                        },
+                        {
+                            label: 'Speaking',
+                            data: speakingData,
+                            borderColor: '#e74c3c',
+                            backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                            tension: 0.3,
+                            fill: false
+                        },
+                        {
+                            label: 'Overall Confidence',
+                            data: confidenceData,
+                            borderColor: '#9b59b6',
+                            backgroundColor: 'rgba(155, 89, 182, 0.1)',
+                            tension: 0.3,
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 10,
+                            title: {
+                                display: true,
+                                text: 'Skill Level (1-10)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Time Period'
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'English Skills Progress Over Time',
+                            font: {
+                                size: 16
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updateCharts() {
+            // Get saved assessment data
+            const savedData = JSON.parse(localStorage.getItem('monthlyAssessmentForm')) || [];
+            
+            // Define the months for the x-axis
+            const labels = ['Start', 'Month 1', 'Month 2', 'Month 3', 'Month 4', 'Month 5', 'Month 6'];
+            
+            // Prepare data for the chart
+            const listeningData = [];
+            const readingData = [];
+            const writingData = [];
+            const speakingData = [];
+            const confidenceData = [];
+            
+            // Map saved data to chart datasets
+            labels.forEach(month => {
+                const monthKey = month.toLowerCase().replace(' ', '');
+                const monthData = savedData.find(entry => entry.data.month === monthKey);
+                
+                if (monthData) {
+                    listeningData.push(parseInt(monthData.data.listening));
+                    readingData.push(parseInt(monthData.data.reading));
+                    writingData.push(parseInt(monthData.data.writing));
+                    speakingData.push(parseInt(monthData.data.speaking));
+                    confidenceData.push(parseInt(monthData.data.confidence));
+                } else {
+                    listeningData.push(null);
+                    readingData.push(null);
+                    writingData.push(null);
+                    speakingData.push(null);
+                    confidenceData.push(null);
+                }
+            });
+            
+            // Update chart data
+            window.skillsChart.data.datasets[0].data = listeningData;
+            window.skillsChart.data.datasets[1].data = readingData;
+            window.skillsChart.data.datasets[2].data = writingData;
+            window.skillsChart.data.datasets[3].data = speakingData;
+            window.skillsChart.data.datasets[4].data = confidenceData;
+            
+            // Update the chart
+            window.skillsChart.update();
+        }
+    </script>
+</body>
+</html>
